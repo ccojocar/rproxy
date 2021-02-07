@@ -4,7 +4,7 @@ A basic downstream http test service
 
 ## Run
 
-You can build and run the serice using as follows:
+You can build and run the serice using the following commands:
 
 ```
 make build

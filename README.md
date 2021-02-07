@@ -39,7 +39,7 @@ make test
 
 ### Run Integration Tests
 
-The integration tests are defined in [tests/integration-tests.sh](test/integration-tests.sh) When executing them, first a local `rpoxy` server
+The integration tests are defined in [tests/integration-tests.sh](tests/integration-tests.sh) When executing them, first a local `rpoxy` server
 along with a number of test [downstream](tests/downstream) http services are started. The script performs a few HTTP requests
 through the proxy into the downstream services. For each request, the HTTP status and response is verified. The integration tests can be executed
 with the following command:
@@ -50,7 +50,7 @@ make integration-test
 
 ## CI
 
-On each pull request a [CI Github Action](.github/workflows/ci.yaml) executes all unit tests and integration tests.
+On each pull request a [CI Github Action](.github/workflows/ci.yml) executes all unit tests and integration tests.
 
 ## Release
 
