@@ -14,7 +14,7 @@ cd -
 
 # Start the rproxy and all the downstream services in background
 trap "exit" INT TERM ERR
-trap "kill 0" EXIT
+trap 'kill $(jobs -p)' EXIT
 
 tests/bin/downstream "downstream1" "127.0.0.1:8081" &
 tests/bin/downstream "downstream2" "127.0.0.1:8082" &
@@ -32,7 +32,7 @@ SERVICE_DOMAIN="downstream.integration-tests.org"
 response=$(curl -x $REV_PROXY --write-out '%{http_code}' --silent $SERVICE_DOMAIN)
 http_code=$(tail -n1 <<< "$response") 
 content=$(sed '$ d' <<< "$response")
-([ "${http_code}" == "200" ] || [ ${content} == downstream* ]) && echo "$TEST: PASSED" || echo "$TEST: FAILED"
+[[ "${http_code}" == "200"  &&  ${content} == downstream* ]] && echo "$TEST: PASSED" || { echo "$TEST: FAILED"; exit 1; }
 
 # Test proxy for an invalid service request
 TEST="TEST: Invalid service request"
@@ -41,4 +41,4 @@ SERVICE_DOMAIN="invalid.integration-tests.org"
 response=$(curl -x $REV_PROXY --write-out '%{http_code}' --silent $SERVICE_DOMAIN)
 http_code=$(tail -n1 <<< "$response") 
 content=$(sed '$ d' <<< "$response")
-[[ "${http_code}" == "400" ]] && echo "$TEST: PASSED" || echo "$TEST: FAILED"
+[[ "${http_code}" == "400" ]] && echo "$TEST: PASSED" || { echo "$TEST: FAILED"; exit 1; }
