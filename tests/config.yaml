@@ -1,0 +1,15 @@
+proxy:
+  listen:
+    address: "127.0.0.1"
+    port: 8080
+
+  services: 
+  - name: downstream
+    domain: downstream.integration-tests.org
+    hosts:
+    - address: "127.0.0.1"
+      port: 8081
+    - address: "127.0.0.1"
+      port: 8082
+    - address: "127.0.0.1"
+      port: 8083
