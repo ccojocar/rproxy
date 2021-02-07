@@ -1,6 +1,6 @@
 # downstream
 
-A basic downstream http test service
+A downstream http test service
 
 ## Run
 
