@@ -8,7 +8,7 @@ image:
   repository: cosmincojocar/rproxy
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v1.0.2"
 
 imagePullSecrets: []
 nameOverride: ""
@@ -21,7 +21,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  name: "rproxy"
 
 podAnnotations: {}
 
@@ -39,6 +39,8 @@ securityContext: {}
 service:
   type: ClusterIP
   port: 80
+  targetPort: 8080
+  portName: http-proxy
 
 ingress:
   enabled: false
@@ -77,3 +79,18 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+# Proxy configuration
+proxy:
+  listen:
+    address: "0.0.0.0"
+    port: 8080
+  services: 
+  - name: my-service
+    domain: my-service.my-company.com
+    hosts:
+    - address: "10.0.0.1"
+      port: 9090
+    - address: "10.0.0.2"
+      port: 9090
+ 
