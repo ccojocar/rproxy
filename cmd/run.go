@@ -17,6 +17,7 @@ var runCmd = &cobra.Command{
 	Short: "Starts the reverse proxy",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		http.HandleFunc("/", handleProxy)
+		http.HandleFunc("/health", handleHealth)
 		if err := http.ListenAndServe(listenAddress(), nil); err != nil {
 			return fmt.Errorf("listening on %s: %w", listenAddress(), err)
 		}
@@ -61,4 +62,9 @@ func handleProxy(res http.ResponseWriter, req *http.Request) {
 		Host:   host.FullAddress(),
 	}
 	proxy.ServeHTTP(target, res, req)
+}
+
+// handleHealth health probe
+func handleHealth(res http.ResponseWriter, req *http.Request) {
+	res.WriteHeader(http.StatusOK)
 }
