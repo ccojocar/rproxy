@@ -82,3 +82,7 @@ git push origin v1.0.0
 
 The configuration of `rproxy` can be defined in a YAML file. An example can be found [here](example.config.yaml).
 
+## Monitoring
+
+There are various monitoring metrics collected by the `rproxy` which are defined in the [SLI](SLI.md) document.
+
