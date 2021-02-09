@@ -7,7 +7,9 @@ import (
 
 	"github.com/ccojocar/rproxy/pkg/config"
 	"github.com/ccojocar/rproxy/pkg/lb"
+	"github.com/ccojocar/rproxy/pkg/monitoring"
 	"github.com/ccojocar/rproxy/pkg/proxy"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 )
@@ -16,8 +18,12 @@ var runCmd = &cobra.Command{
 	Use:   "run",
 	Short: "Starts the reverse proxy",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		if err := monitoring.Init(); err != nil {
+			return err
+		}
 		http.HandleFunc("/", handleProxy)
 		http.HandleFunc("/health", handleHealth)
+		http.Handle("/metrics", promhttp.Handler())
 		if err := http.ListenAndServe(listenAddress(), nil); err != nil {
 			return fmt.Errorf("listening on %s: %w", listenAddress(), err)
 		}
@@ -38,6 +44,8 @@ func listenAddress() string {
 
 // handleProxy main entry point for handling all proxy requests
 func handleProxy(res http.ResponseWriter, req *http.Request) {
+	monitoring.RequestCountMetric.Inc()
+	monitoring.RequestLatencyMeric.Start()
 	domain := req.Host
 	if domain == "" {
 		log.Warnf("Not service found in the %q HTTP header", "Host")
@@ -62,6 +70,7 @@ func handleProxy(res http.ResponseWriter, req *http.Request) {
 		Host:   host.FullAddress(),
 	}
 	proxy.ServeHTTP(target, res, req)
+	monitoring.RequestLatencyMeric.Finish(domain)
 }
 
 // handleHealth health probe
