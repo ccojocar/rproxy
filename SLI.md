@@ -1,6 +1,6 @@
 # Service-level indicators
 
-This document describes the monitoring metrics that measure the performance of `rproxy` service. Each metric definition will contain a description, kind, type and unit. They are collected by instrumenting the proxy source code.
+This document describes the monitoring metrics that measure the performance of `rproxy` service. Each metric definition will contain a name, description, kind, type and unit. They are collected by instrumenting the proxy source code.
 
 This document does not define any system specific metrics such as CPU and memory utilisation which will be collected directly from the container where each proxy instance runs.
 
@@ -29,6 +29,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 ### Request count
 
+**Name:** request_count
+
 **Description:** The number of requests served by the reverse proxy. It measures the number of requests received since the last data point.
 
 **Kind:** Delta
@@ -38,6 +40,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 **Unit:** Number
 
 ### Request rate
+
+**Name:** request_rate
 
 **Description:** The number of requests per second per each downstream service. It measures the number of requests per second served per downstream service.
 
@@ -49,15 +53,19 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 ### Request latency
 
+**Name:** request_latency
+
 **Description:** The distribution of the latency calculated from when the request was received by the `rproxy` until the last response byte to the client.
 
 **Kind:** Delta
 
 **Type:** Distribution
 
-**Unit:** ms
+**Unit:** seconds
 
 ### Downstream service latency
+
+**Name:** downstream_service_latency
 
 **Description:** The distribution of the latency calculated form when the request was sent by the `rproxy` to a downstream service until the `rproxy` received the last response byte from downstream service.
 
@@ -65,9 +73,11 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 **Type:**  Distribution
 
-**Unit:** ms
+**Unit:** seconds
 
 ### Request bytes
+
+**Name:** request_bytes
 
 **Description:** The number of requests bytes sent as requests from clients through the proxy. It measures the total number of bytes for all clients since last data point.
 
@@ -79,6 +89,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 ### Response bytes
 
+**Name:** response_bytes
+
 **Description:** The number of response bytes sent as response to clients through the proxy. It measures the total number of bytes for all clients since last data point.
 
 **Kind:** Delta
@@ -88,6 +100,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 **Unit:** Bytes
 
 ### Open connections
+
+**Name:** open_connections
 
 **Description:** The current number of outstanding connection through `rproxy`. It is measured as the number of connection at a given moment in time. 
 
@@ -99,6 +113,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 ### Close connections
 
+**Name:** close_connections
+
 **Description:** The number of connections that were terminated. It measure the number of terminated connections since last data point.
 
 **Kind:** Delta
@@ -108,6 +124,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 **Unit:** Number
 
 ### Connection errors
+
+**Name:** connection_errors
 
 **Description:** The number of failed connections between the `rproxy` and the downstream services. It counts the number of failed connections since the last data point.
 
@@ -119,6 +137,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 
 ### Error count
 
+**Name:** error_count
+
 **Description:** The number of errors encountered while serving client requests. It counts the number of errors since the last data point.
 
 **Kind:** Delta
@@ -128,6 +148,8 @@ The kind of a metric defines how to interpret the values relative to each other.
 **Unit:** Number
 
 ### Error rate
+
+**Name:** error_rate
 
 **Description:** The percent of client requests that generate either a 4xxx or 5xxx HTTP error. It computes the percent of failed requests since last data point.
 
